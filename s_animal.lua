@@ -177,20 +177,6 @@ end
 
 
 
-
---problemas con saber la posicion
---function checkPosition(ped)
-    --if not isElement(ped) then return end
---
-   -- outputChatBox(tostring(isElementInWater(ped)))
-   -- if isElementInWater(ped) then
-       -- outputChatBox("El ped está en agua!")
-   -- else
-        --outputChatBox("El ped no está en agua.")
-   -- end
---end
-
-
 function changeAnimation(ped,i)
     outputChatBox(i)
 
@@ -318,14 +304,14 @@ end
 
 function firstWarning(ped,blip,marker,i,player)
     cancelTimer(ped) --se cancela el timer anterior de espera
-   removeBlip(blip)
+    removeBlip(blip)
     -- calcRotation(ped)
     calcRotationNew(ped, player)
     changeAnimation(ped, i)
     checkLife(ped)
     removeProximitySensor(marker)
-  outputChatBox("se creao UNA advertencia")
-  huntingTime(ped) --se cancela el timer de espera y se crea uno nuevo de caza
+     outputChatBox("se creao UNA advertencia")
+     huntingTime(ped) --se cancela el timer de espera y se crea uno nuevo de caza
    return true
 end
 
