@@ -31,13 +31,15 @@ local crearYMoverPeds
 local firstWarning
 local deletePed
 --funciones
+
+
 function createAndSetTimer(ped,marker,blip)
     local timer = setTimer(function()
       
       removeProximitySensor(marker)
       removeBlip(blip)
       deletePed(ped)
-     -- outputChatBox("Elimino LAS COSAS")
+   
     end
    ,300000,1)
     setElementData(ped, "deleteTimer", timer)
@@ -222,8 +224,8 @@ end
 
 function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
     
-    local ped = createPed(1, x1, y1, z1)
-    local typeAn=0
+     local ped = createPed(1, x1, y1, z1)
+     local typeAn=0
      setElementHealth(ped, 100)
     
     local i=1
@@ -243,7 +245,7 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
 
             local warningBool=false
             local  warning=false
-       --changeAnimation(ped, 1)
+       
             addEventHandler("onPedDamage", ped, function()
                  --se cancela el timer anterior
                 outputChatBox("¡Ped dañado!")
@@ -294,10 +296,10 @@ end
 
 
 function crearYMoverPeds(player)
-        local indiceAleatorio = math.random(1, #posiciones)
+         local indiceAleatorio = math.random(1, #posiciones)
          local x1, y1, z1, rotacion = unpack(posiciones[indiceAleatorio]) 
          local radio=50.0
-       local  ped = crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)  
+         local  ped = crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)  
       
         outputChatBox("ped comenzo a moverse. . . ")
 end
@@ -305,13 +307,13 @@ end
 function firstWarning(ped,blip,marker,i,player)
     cancelTimer(ped) --se cancela el timer anterior de espera
     removeBlip(blip)
-    -- calcRotation(ped)
-    calcRotationNew(ped, player)
+    calcRotation(ped)
+     
     changeAnimation(ped, i)
     checkLife(ped)
     removeProximitySensor(marker)
-     outputChatBox("se creao UNA advertencia")
-     huntingTime(ped) --se cancela el timer de espera y se crea uno nuevo de caza
+    outputChatBox("se creao UNA advertencia")
+    huntingTime(ped) --se cancela el timer de espera y se crea uno nuevo de caza
    return true
 end
 
