@@ -154,8 +154,8 @@ function checkLife(ped)
  local vida = getElementHealth(ped)
     if vida and vida <= 70 then
         changeAnimation(ped,4)
-        local b=true
-        return b
+      
+        return true
     else
         outputDebugString("Error: No se pudo obtener la vida del ped.", 2)
         return false
@@ -225,34 +225,27 @@ end
 function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
     
      local ped = createPed(1, x1, y1, z1)
-     local typeAn=0
      setElementHealth(ped, 100)
     
     local i=1
     
     if ped then
-
-           -- calcRotation(ped)
-        
-          setElementData(ped, "npc", player)
+            setElementData(ped, "npc", player)
             
-        local marker = createMarker(x1, y1, z1, "cylinder", radio, 255, 162, 51, 0)
-             
-                --validadores
-         local blip = createBlipPed(x1, y1, z1)
+              local marker = createMarker(x1, y1, z1, "cylinder", radio, 255, 162, 51, 0)
+              local blip = createBlipPed(x1, y1, z1)
+         
             createProximitySensor(ped, marker,blip,player)
             createAndSetTimer(ped,marker,blip)
 
-            local warningBool=false
-            local  warning=false
+              local warningBool=false
+              local  warning=false
        
             addEventHandler("onPedDamage", ped, function()
-                 --se cancela el timer anterior
-                outputChatBox("¡Ped dañado!")
-               
+                 
                 if  not warningBool  then 
                 
-                 warningBool=firstWarning(ped,blip,marker,3,player)
+                 warningBool= firstWarning(ped,blip,marker,3,player)
                     
                 else  
 
@@ -263,10 +256,10 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
 
                         
                      else
+                        --este es el "Proceso de Orientacion"
                         outputChatBox("ped al borde de la muerte")
                         calcRotation(ped)
 
-                        
                     end
 
                 end
@@ -282,8 +275,6 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
                  deletePed(ped)
             end)
 
-        
-            
             return ped
         
         else
@@ -308,11 +299,12 @@ function firstWarning(ped,blip,marker,i,player)
     cancelTimer(ped) --se cancela el timer anterior de espera
     removeBlip(blip)
     calcRotation(ped)
-     
-    changeAnimation(ped, i)
-    checkLife(ped)
+
+    if not checkLife(ped) then --se chequea la vida y en caso de no estar alerta el animal camina
+        changeAnimation(ped, i)
+    end
+
     removeProximitySensor(marker)
-    outputChatBox("se creao UNA advertencia")
     huntingTime(ped) --se cancela el timer de espera y se crea uno nuevo de caza
    return true
 end
