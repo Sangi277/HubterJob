@@ -12,7 +12,7 @@
 }
 
  
-accion = {"WALK_old","WALK_civi","RUN_civi","SPRINT_civi"}
+accion = {"RUN_civi","SPRINT_civi"}
 
 
 --funciones
@@ -102,7 +102,7 @@ function createProximitySensor(ped, marker, blip,player)
         -- Verificar que quien entró sea un jugador y esté en la misma dimensión
         if not matchingDimension then return end
         if getElementType(hitElement) ~= "player" then return end
-        firstWarning(ped, blip, marker, 3,player)
+        firstWarning(ped, blip, marker, 1,player)
         outputChatBox("jugador entro en el area del ped")
         
     end)
@@ -153,7 +153,7 @@ end
 function checkLife(ped)
  local vida = getElementHealth(ped)
     if vida and vida <= 70 then
-        changeAnimation(ped,4)
+        changeAnimation(ped,2)
       
         return true
     else
@@ -226,7 +226,7 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
     
      local ped = createPed(1, x1, y1, z1)
      setElementHealth(ped, 100)
-    
+    math.randomseed(os.time()) 
     local i=1
     
     if ped then
@@ -245,7 +245,7 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
                  
                 if  not warningBool  then 
                 
-                 warningBool= firstWarning(ped,blip,marker,3,player)
+                 warningBool= firstWarning(ped,blip,marker,1,player)
                     
                 else  
 
