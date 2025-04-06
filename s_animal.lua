@@ -224,7 +224,7 @@ end
 
 function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
     
-     local ped = createPed(1, x1, y1, z1)
+     local ped = createPed(301, x1, y1, z1)
      setElementHealth(ped, 100)
     math.randomseed(os.time()) 
     local i=1
