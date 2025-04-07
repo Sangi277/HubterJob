@@ -15,7 +15,7 @@ function openImageWindow()
 
     -- Crear las imágenes (escaladas para que quepan)
     local imageWidth, imageHeight = 200, 300 -- Escala de 1024x1536 a un tamaño manejable
-    local imageFiles = { "img/caracal.png", "img/ciervo.png", "img/grupo.png" }
+    local imageFiles = { "img/grupo.png", "img/ciervo.png", "img/caracal.png" }
 
     for i, imageFile in ipairs(imageFiles) do
         -- Posición de cada imagen en la ventana
@@ -41,7 +41,7 @@ function openImageWindow()
             -- Marcar la imagen seleccionada
             guiSetProperty(label, "NormalTextColour", "FF00FF00")     -- Borde verde (seleccionada)
             selectedImage = i
-            outputChatBox("Imagen #" .. i .. " seleccionada (debug)") -- Mensaje de depuración
+          
         end, false)
     end
 
@@ -53,10 +53,13 @@ function openImageWindow()
     -- Manejar el clic en el botón
     addEventHandler("onClientGUIClick", acceptButton, function()
         if selectedImage then
-            outputChatBox("Has seleccionado la imagen #" .. selectedImage)
+          
+
+            triggerServerEvent("createAnimal", localPlayer, selectedImage)
+            
             closeImageWindow()
         else
-            outputChatBox("Por favor, selecciona una imagen primero.", 255, 0, 0)
+          
         end
     end, false)
 
@@ -70,13 +73,16 @@ function closeImageWindow()
         destroyElement(window)
         window = nil
         imageLabels = {}
-        selectedImage = nil
+       -- selectedImage = nil
         showCursor(false)
     end
 end
 
--- Comando para abrir la ventana (para pruebas)
+
 addCommandHandler("openimages", openImageWindow)
 
--- Cerrar la ventana al salir del recurso
 addEventHandler("onClientResourceStop", resourceRoot, closeImageWindow)
+
+
+addEvent("panelWindowHunt", true)
+addEventHandler("panelWindowHunt",resourceRoot, openImageWindow)

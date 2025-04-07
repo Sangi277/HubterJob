@@ -10,7 +10,7 @@
     {-1684.869140625, -2422.1982421875, 103.75692749023, 0},
     {-1307.486328125, -2438.8271484375, 23.657644271851, 0}  
 }
-
+listIds = { 300, 301, 311, 1 }
  
 accion = {"RUN_civi","SPRINT_civi"}
 
@@ -43,14 +43,14 @@ function createAndSetTimer(ped,marker,blip)
     end
    ,300000,1)
     setElementData(ped, "deleteTimer", timer)
-    outputChatBox("SE CREO EL TIMER espera ")
+   
 end
 
 function huntingTime(ped)
     local timer = setTimer(function()
         deletePed(ped)
     end,300000,1)
-    outputChatBox("SE CREO EL TIMER CAZA")
+  
     setElementData(ped, "deleteTimer", timer)
 end
 
@@ -60,7 +60,7 @@ function cancelTimer(ped)
     if Auxtimer then
         killTimer(Auxtimer)
         setElementData(ped, "deleteTimer", nil)
-        outputChatBox("SE ELIMINO EL timer")
+    
     end
 end
 
@@ -75,21 +75,21 @@ end
 
 function removeProximitySensor(marker)
     if not marker then
-        outputDebugString("Error: El marcador es nil", 2)
+       
         return false
     end
     
     if not isElement(marker) then
-        outputDebugString("Error: El marcador ya no existe como elemento", 2)
+       
         return false
     end
     
     local destruccionExitosa = destroyElement(marker)
     if destruccionExitosa then
-        outputDebugString("Sensor de proximidad eliminado con éxito")
+       
         return true
     else
-        outputDebugString("Error al intentar destruir el sensor", 2)
+     
         return false
     end
 
@@ -103,13 +103,14 @@ function createProximitySensor(ped, marker, blip,player)
         if not matchingDimension then return end
         if getElementType(hitElement) ~= "player" then return end
         firstWarning(ped, blip, marker, 1,player)
-        outputChatBox("jugador entro en el area del ped")
+       
         
     end)
 end
 
 local angulos={30,-30,60,-60,90,-90}
 
+--funcion a mejorar
 function calcRotationNew(ped, player)
     local _,_,playerRot = getElementRotation(player)
     local i = math.random(1, 6)
@@ -123,11 +124,11 @@ function causeOfDeath(killer)
     local bonus = 0
     if killer and getElementType(killer) == "player" then
         local killerName = getPlayerName(killer)
-        outputChatBox("El ped fue cazado por: " .. killerName)
+    
         bonus = 20
         return bonus
     else
-        outputChatBox("El ped murió por causas naturales")
+        
         bonus = 10
         return bonus
     end
@@ -157,7 +158,7 @@ function checkLife(ped)
       
         return true
     else
-        outputDebugString("Error: No se pudo obtener la vida del ped.", 2)
+     
         return false
     end
 
@@ -173,17 +174,17 @@ function calcRotation(ped)
 
     local angulo = math.deg(math.atan2(x2 - x1, y2 - y1))
     local rotacion = (angulo + 180) % 360
-        outputChatBox("la rotacion es: "..rotacion)
+      
         setElementRotation(ped, 0, 0, rotacion)
 end
 
 
 
 function changeAnimation(ped,i)
-    outputChatBox(i)
+   
 
     if i<=4 then
-             outputChatBox("se cambio: "..accion[i])
+            
 
                  --setElementHealth(ped, 100)  
                  setPedAnimation(
@@ -197,7 +198,7 @@ function changeAnimation(ped,i)
                  true )-- freezeLastFrame
      
     else 
-         outputChatBox("se exedio con el incrementador")   
+       
 
     end
     
@@ -215,16 +216,16 @@ function removeBlip(blip)
 
       destroyElement(blip)
     
-      outputChatBox("El bot sufrio daño, blip eliminado.", root)
+    
 
     end
 
 end
 
 
-function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
+function crearPedEnPosicion(x1, y1, z1, rotacion, player, radio, typeAnimal)
     
-     local ped = createPed(301, x1, y1, z1)
+    local ped = createPed(listIds[typeAnimal], x1, y1, z1)
      setElementHealth(ped, 100)
     math.randomseed(os.time()) 
     local i=1
@@ -250,14 +251,13 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
                 else  
 
                     if not warning then
-                        outputChatBox("ped corre peligro")
+                       --el ped recibe una segunda bala
                          warning=checkLife(ped)
-                         calcRotationNew(ped, player)
-
+                         calcRotation(ped)   
                         
                      else
                         --este es el "Proceso de Orientacion"
-                        outputChatBox("ped al borde de la muerte")
+                      
                         calcRotation(ped)
 
                     end
@@ -278,7 +278,7 @@ function crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)
             return ped
         
         else
-        outputDebugString("Error al crear el ped.", 2)
+       
         return false
         
     end
@@ -286,13 +286,13 @@ end
 
 
 
-function crearYMoverPeds(player)
+function crearYMoverPeds(player,typeAnimal)
          local indiceAleatorio = math.random(1, #posiciones)
          local x1, y1, z1, rotacion = unpack(posiciones[indiceAleatorio]) 
          local radio=50.0
-         local  ped = crearPedEnPosicion(x1, y1, z1, rotacion,player,radio)  
+    local ped = crearPedEnPosicion(x1, y1, z1, rotacion, player, radio, typeAnimal)
       
-        outputChatBox("ped comenzo a moverse. . . ")
+       
 end
 
 function firstWarning(ped,blip,marker,i,player)
@@ -314,7 +314,13 @@ end
 addCommandHandler("crear", crearYMoverPeds)
 
 
+addEvent("createAnimal", true)
 
+addEventHandler("createAnimal", root, function(typeAnimal)
+       
+    crearYMoverPeds(player,typeAnimal)
+    
+end)
 
 
 
