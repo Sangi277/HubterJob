@@ -25,3 +25,12 @@ addEventHandler("animarHunter", root, animarHunter)
 
 
 
+function ReordenanHunter(player)
+ local RotHunter = getPlayerRotation(player)
+    if (RotHunter > 90)
+|       outputChatBox("mal colocado")
+    else    
+    outputChatBox("Esta alienado")
+    end
+
+end
