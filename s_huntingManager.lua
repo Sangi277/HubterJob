@@ -1,7 +1,8 @@
 
- local hunter = createPed( 33, -1628.8681640625, -2239.294921875,31.4765625 , 85.807281494141)
+ local hunter = createPed( 33, -1628.8681640625, -2239.294921875,31.4765625 , 85)
+setPedRotation(hunter, 85)
 
-    if not hunter then
+ if not hunter then
         outputChatBox("Error al crear el NPC")
         return
     end
@@ -24,13 +25,3 @@ addEvent("animarHunter", true)
 addEventHandler("animarHunter", root, animarHunter)
 
 
-
-function ReordenanHunter(player)
- local RotHunter = getPlayerRotation(player)
-    if (RotHunter > 90)
-|       outputChatBox("mal colocado")
-    else    
-    outputChatBox("Esta alienado")
-    end
-
-end
